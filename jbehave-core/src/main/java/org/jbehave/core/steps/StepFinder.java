@@ -26,22 +26,34 @@ import org.apache.commons.lang.StringUtils;
 public class StepFinder {
 
     private PrioritisingStrategy prioritisingStrategy;
+    private final OrderingStrategy orderingStrategy;
 
     /**
      * Creates a StepFinder with a {@link ByPriorityField} strategy
      */
     public StepFinder() {
-        this(new ByPriorityField());
+        this(new FilteringByPatternLength());
     }
 
     /**
      * Creates a StepFinder with a custom strategy
-     * 
+     *
      * @param prioritisingStrategy
      *            the PrioritisingStrategy
      */
     public StepFinder(PrioritisingStrategy prioritisingStrategy) {
+        this(prioritisingStrategy, new OrderByPatternLength());
+    }
+
+    /**
+     * Creates a StepFinder with a custom strategy
+     *
+     * @param prioritisingStrategy
+     *            the PrioritisingStrategy
+     */
+    public StepFinder(PrioritisingStrategy prioritisingStrategy, OrderingStrategy orderingStrategy) {
         this.prioritisingStrategy = prioritisingStrategy;
+        this.orderingStrategy = orderingStrategy;
     }
 
     /**
@@ -109,6 +121,8 @@ public class StepFinder {
         for (CandidateSteps steps : candidateSteps) {
             collected.addAll(steps.listCandidates());
         }
+
+        collected = orderingStrategy.order(collected);
         return collected;
     }
 
@@ -133,6 +147,10 @@ public class StepFinder {
 
         List<StepCandidate> prioritise(String stepAsString, List<StepCandidate> candidates);
 
+    }
+
+    public interface OrderingStrategy {
+        List<StepCandidate> order(List<StepCandidate> candidates);
     }
 
     /**
