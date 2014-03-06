@@ -3,9 +3,8 @@ package org.jbehave.core.steps;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
 
 public class FilteringByPatternLength implements StepFinder.PrioritisingStrategy {
 
@@ -19,7 +18,7 @@ public class FilteringByPatternLength implements StepFinder.PrioritisingStrategy
             return candidates;
         }
 
-        List<StepCandidate> result = newArrayListWithExpectedSize(candidates.size() / 2);
+        List<StepCandidate> result = new ArrayList<StepCandidate>(candidates.size() / 2);
         int stepAsTextLength = trimTrailingLines(trimStartingWord(stepAsText)).length();
         for (StepCandidate candidate : candidates) {
             if (OrderByPatternLength.patternLength(candidate) <= stepAsTextLength) {
@@ -30,27 +29,11 @@ public class FilteringByPatternLength implements StepFinder.PrioritisingStrategy
         return result;
     }
 
-/*
-    @Override
-    public List<StepCandidate> prioritise(String stepAsText, List<StepCandidate> candidates) {
-        int pos=0;
-        int stepAsTextLength = trimStartingWord(stepAsText).length();
-        for (StepCandidate candidate : candidates) {
-            if (ByPatternLength.removePatterns(candidate.getPatternAsString()).length() <= stepAsTextLength) {
-                break;
-            }
-            pos++;
-        }
-
-        return candidates.subList(pos, candidates.size());
-    }
-*/
-
     private String trimStartingWord(String stepAsString) {
         return StringUtils.substringAfter(stepAsString, " ");
     }
 
     private String trimTrailingLines(String stepAsString) {
-        return stepAsString.split("[\\n\\r]")[0];
+        return stepAsString.split("\\[\\n\\r\\]")[0];
     }
 }

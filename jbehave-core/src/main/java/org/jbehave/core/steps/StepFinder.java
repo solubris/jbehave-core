@@ -1,12 +1,8 @@
 package org.jbehave.core.steps;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
+
+import java.util.*;
 
 /**
  * <p>
@@ -122,7 +118,9 @@ public class StepFinder {
             collected.addAll(steps.listCandidates());
         }
 
-        collected = orderingStrategy.order(collected);
+        if(orderingStrategy != null) {
+            collected = orderingStrategy.order(collected);
+        }
         return collected;
     }
 

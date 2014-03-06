@@ -1,8 +1,5 @@
 package org.jbehave.core.steps;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,10 +31,12 @@ public class OrderByPatternLength implements StepFinder.OrderingStrategy {
 
     private static final Comparator<StepCandidate> mostSpecificCandidateFirst = new Comparator<StepCandidate>() {
         public int compare(StepCandidate o1, StepCandidate o2) {
-            return ComparisonChain.start()
-                    .compare(patternLength(o2), patternLength(o1))
-                    .compare(o2.getPriority(), o1.getPriority())
-                    .result();
+            int result = Integer.valueOf(patternLength(o2)).compareTo(Integer.valueOf(patternLength(o1)));
+            if(result == 0) {
+                result = o2.getPriority().compareTo(o1.getPriority());
+            }
+
+            return result;
         }
     };
 
