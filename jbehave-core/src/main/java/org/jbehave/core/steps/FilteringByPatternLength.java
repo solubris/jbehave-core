@@ -34,6 +34,6 @@ public class FilteringByPatternLength implements StepFinder.PrioritisingStrategy
     }
 
     private String trimTrailingLines(String stepAsString) {
-        return stepAsString.split("\\[\\n\\r\\]")[0];
+        return stepAsString.split("[\\n\\r]", 2)[0];
     }
 }

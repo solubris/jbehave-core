@@ -13,16 +13,19 @@ import java.util.*;
  * <p>
  * The {@link StepCandidate}s are responsible for the matching of a particular
  * textual step and are sometimes represented as {@link Stepdoc}s, each of which
- * is simply a facade documenting a candidate. The candidates can be prioritised
+ * is simply a facade documenting a candidate.
+ * The candidates are first ordered via an injectable {@link OrderingStrategy},
+ * defaulting to {@link OrderByPatternLength}
+ * Then for each step in the story, candidates are prioritised
  * via an injectable {@link PrioritisingStrategy}, defaulting to
- * {@link ByPriorityField}. A more sophisticated strategy that can be used is
- * the {@link ByLevenshteinDistance}.
+ * {@link FilteringByPatternLength}.
+ * This approach renders the {@link ByLevenshteinDistance} and {@link ByPriorityField} strategies redundant.
  * </p>
  */
 public class StepFinder {
 
     private PrioritisingStrategy prioritisingStrategy;
-    private final OrderingStrategy orderingStrategy;
+    final OrderingStrategy orderingStrategy;
 
     /**
      * Creates a StepFinder with a {@link ByPriorityField} strategy
@@ -156,6 +159,7 @@ public class StepFinder {
      * {@link StepCandidate#getPriority()} field which is settable in the
      * {@link Given}, {@link When}, {@link Then} annotations.
      */
+    @Deprecated
     public static class ByPriorityField implements PrioritisingStrategy {
 
         public List<StepCandidate> prioritise(String stepAsText, List<StepCandidate> candidates) {
@@ -173,6 +177,7 @@ public class StepFinder {
      * Strategy to priorise candidate steps by <a
      * href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein Distance</a>
      */
+    @Deprecated
     public static class ByLevenshteinDistance implements PrioritisingStrategy {
 
         private LevenshteinDistance ld = new LevenshteinDistance();

@@ -22,7 +22,7 @@
     <ignore.failre.in.stories>true</ignore.failre.in.stories>
     <meta.filter></meta.filter>
     <threads>2</threads>
-    <story.timeout.in.secs>3</story.timeout.in.secs>
+    <story.timeout.in.secs>30</story.timeout.in.secs>
   </properties>
 
   <build>

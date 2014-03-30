@@ -17,12 +17,12 @@ import java.util.regex.Pattern;
  * NOTE: Patterns with wildcards like this {price|cost} are mapped to separate candidates for all possibilities
  * <p/>
  * Here are some example patterns which overlap:
- * "WHEN the user clicks on edit cluster relationship link for participating account $participatingAccountName"
+ * "WHEN the user clicks on edit link for account $accountName"
  * "WHEN the user clicks $buttonId"
  * <p/>
  */
 public class OrderByPatternLength implements StepFinder.OrderingStrategy {
-    private static final Pattern PARAM_PATTERN = Pattern.compile("\\$\\w+");
+    private static final Pattern PARAM_PATTERN = Pattern.compile("[ ]?\\$\\w+");
 
     private static String removePatterns(String candidate) {
         Matcher matcher = PARAM_PATTERN.matcher(candidate);

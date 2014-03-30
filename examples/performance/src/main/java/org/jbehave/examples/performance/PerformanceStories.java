@@ -35,6 +35,7 @@ public class PerformanceStories extends JUnitStories {
         return new MostUsefulConfiguration().useStoryLoader(new LoadFromClasspath(embeddableClass))
                 // old slow step collection:
                 //.useStepCollector(new MarkUnmatchedStepsAsPending(new StepFinder(new StepFinder.ByLevenshteinDistance(), null)))
+//                .useStepCollector(new MarkUnmatchedStepsAsPending(new CachingStepFinder()))
                 .useStoryReporterBuilder(
                         new StoryReporterBuilder()
                                 .withCodeLocation(CodeLocations.codeLocationFromClass(embeddableClass))
@@ -48,9 +49,10 @@ public class PerformanceStories extends JUnitStories {
 
     @Override
     protected List<String> storyPaths() {
-        return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()), "**/*.story", "**/generate.story");
-// use this to generate steps/stories
-//        return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()), "**/generate.story", "");
+        if(System.getProperty("generate") != null) {
+            return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()), "**/generate.story", "");
+        } else {
+            return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()), "**/*.story", "**/generate.story");
+        }
     }
-
 }
